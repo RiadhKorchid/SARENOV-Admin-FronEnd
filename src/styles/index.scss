@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+
+
+
+* {
+    font-family: 'Cairo', sans-serif;
+    text-decoration: none;
+    box-sizing: border-box;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+body {
+    background: #f4f4f4;
+}
+
+
+@import "./auth";
+@import "./privateLayout";
+@import "./modal";
+@import "./computer";
+@import "./deleteModal"
