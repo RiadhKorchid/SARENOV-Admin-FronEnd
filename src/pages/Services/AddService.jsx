@@ -17,8 +17,13 @@ const AddService = ({ closeModal }) => {
         mutationFn: (payload) => axiosClient.post('/service/addService', payload),
         onSuccess: (data) => {
             closeModal()
+            setName("")
+            setDescription("")
+            setPrice("")
+            setTime("")
+            setImage("")
             queryClient.invalidateQueries(["services"])
-            console.log("new service added succesfuly ")
+
         },
         onError: () => {
 
@@ -38,16 +43,18 @@ const AddService = ({ closeModal }) => {
                 <Stack spacing={2} direction="column">
                     <Stack spacing={2} direction="row">
                         <TextField label="Name" type="text" fullWidth
-                            onChange={(e) => setName(e.target.value)} />
+                            onChange={(e) => setName(e.target.value)} value={name} />
                         <TextField label="Image" type="text" fullWidth
-                            onChange={(e) => setImage(e.target.value)} />
+                            onChange={(e) => setImage(e.target.value)} value={imagePublicId} />
                     </Stack>
 
                     <Stack spacing={2} direction="row">
                         <TextField label="Price" type="number" fullWidth
-                            onChange={(e) => setPrice(e.target.value)} />
+                            onChange={(e) => setPrice(e.target.value)} value={price} />
                         <TextField label="time" type="text" fullWidth
                             onChange={(e) => setTime(e.target.value)}
+                            value={time}
+
                         />
                     </Stack>
                     <Stack spacing={2} direction="row">
@@ -55,7 +62,7 @@ const AddService = ({ closeModal }) => {
                             rows={4}
                             multiline
                             variant="outlined"
-                            onChange={(e) => setDescription(e.target.value)} />
+                            onChange={(e) => setDescription(e.target.value)} value={description} />
 
                     </Stack>
                     <Button type="submit" variant="contained" color="primary">Save</Button>

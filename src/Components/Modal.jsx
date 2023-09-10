@@ -1,16 +1,16 @@
 import { FaTimes } from "react-icons/fa"
 import { useRef } from "react"
-const ModalComponent = ({ open, closeModal, title, Component }) => {
+const ModalComponent = ({ open, closeModal, title, Component, defaultService }) => {
 
     const popupRef = useRef()
-    function handleClose() {
-        document.querySelector('.popap').classList.toggle('open')
-        closeModal()
-    }
+    /*  function handleClose() {
+          document.querySelector('.popap').classList.toggle('open')
+          closeModal()
+      }*/
 
     const close = (e) => {
         if (e.target === popupRef.current) {
-            handleClose()
+            closeModal()
         }
     }
 
@@ -21,10 +21,10 @@ const ModalComponent = ({ open, closeModal, title, Component }) => {
             <div className="modal">
                 <div className="modal-header">
                     <h2>{title}</h2>
-                    <FaTimes size={20} color="black" cursor={"pointer"} onClick={handleClose} />
+                    <FaTimes size={20} color="black" cursor={"pointer"} onClick={closeModal} />
                 </div>
                 <div className="modal-main">
-                    <Component closeModal={closeModal} />
+                    <Component closeModal={closeModal} defaultService={defaultService} />
                 </div>
             </div>
         </div>

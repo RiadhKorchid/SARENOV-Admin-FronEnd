@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table,Button, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material"
+import { Table, Button, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material"
 import { FaEdit, FaTrashAlt, FaPlus, FaTimes } from "react-icons/fa"
 import ModalComponent from "../../Components/Modal";
 import DeleteModal from "../../Components/DeleteModal";
@@ -7,12 +7,15 @@ import { useFetch } from "../../hooks/useFetch";
 import AddRealisation from "./AddRealisation";
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axiosClient from "../../axios-client"
+import UpdateRealisation from "./UpdateRealisation";
 const Realisation = () => {
     const { data, isLoading } = useFetch(["realisations"], '/realisation/getAllRealisation')
     const queryClient = useQueryClient()
     const [open, setOpen] = useState(false)
+    const [update, setUpdate] = useState(false)
     const [deleteModal, setDelete] = useState(false)
     const [selectRealisation, setId] = useState("")
+    const [defaultRealisation, setDefaultValue] = useState({})
     const handleOpen = (e) => {
         setOpen(!open)
     }
@@ -20,8 +23,14 @@ const Realisation = () => {
         setId(id)
         setDelete(!deleteModal)
     }
-
-
+    const handleOpenUpdate = (el) => {
+        setUpdate(!update)
+        setDefaultValue(el)
+    }
+    const handleCloseUpdate = () => {
+        setUpdate(false)
+        setDefaultValue({})
+    }
 
 
     const cellStyle = {
@@ -74,7 +83,7 @@ const Realisation = () => {
 
 
                                 <TableCell >
-                                    <FaEdit size={17} color="green" cursor="pointer" />
+                                    <FaEdit size={17} color="green" cursor="pointer" onClick={(e) => handleOpenUpdate(el)} />
                                     <span>.....</span>
                                     <FaTrashAlt size={17} color="red" cursor="pointer"
                                         onClick={(e) => handleOpenDelete(el._id)}
@@ -89,6 +98,7 @@ const Realisation = () => {
             <ModalComponent open={open} closeModal={handleOpen} title={"Add New Realisation"} Component={AddRealisation} />
             <DeleteModal open={deleteModal} closeModal={handleOpenDelete}
                 onClick={handleDeleteRealisation} />
+                 <ModalComponent open={update} closeModal={handleCloseUpdate} title={"update Realisation"} Component={UpdateRealisation} defaultService={defaultRealisation} />
         </>
 
 

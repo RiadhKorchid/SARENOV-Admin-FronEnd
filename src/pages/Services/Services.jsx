@@ -7,12 +7,15 @@ import { useFetch } from "../../hooks/useFetch";
 import DeleteModal from "../../Components/DeleteModal";
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axiosClient from "../../axios-client"
+import UpdateService from "./UpdateService";
 const Service = () => {
     const { data, isLoading } = useFetch(["services"], '/service/getAllServices')
     const queryClient = useQueryClient()
     const [open, setOpen] = useState(false)
+    const [update, setUpdate] = useState(false)
     const [deleteModal, setDelete] = useState(false)
     const [selectService, setId] = useState("")
+    const [defaultService, setDefaultService] = useState({})
     const handleOpen = (e) => {
         setOpen(!open)
     }
@@ -20,7 +23,14 @@ const Service = () => {
         setId(id)
         setDelete(!deleteModal)
     }
-
+    const handleOpenUpdate = (el) => {
+        setDefaultService(el)
+        setUpdate(!update)
+    }
+    const handdleCloseUpdate = () => {
+        setDefaultService({})
+        setUpdate(!update)
+    }
 
     const cellStyle = {
         maxWidth: '200px', // Set your desired max-width here
@@ -46,9 +56,9 @@ const Service = () => {
 
     return (
 
-        <> <div style={{marginBottom :"0.75rem" ,display :"flex" , justifyContent : "flex-end"} }>
+        <> <div style={{ marginBottom: "0.75rem", display: "flex", justifyContent: "flex-end" }}>
             <Button variant="contained" color="primary" onClick={handleOpen} cursor={"pointer"} >
-                <FaPlus size={17} color="white"  />
+                <FaPlus size={17} color="white" />
             </Button>
         </div>
             <TableContainer component={Paper}>
@@ -58,6 +68,7 @@ const Service = () => {
                             <TableCell>Name</TableCell>
                             <TableCell >Description</TableCell>
                             <TableCell >Price</TableCell>
+                            <TableCell >time</TableCell>
                             <TableCell >Image</TableCell>
                         </TableRow>
                     </TableHead>
@@ -70,9 +81,9 @@ const Service = () => {
                                 <TableCell component="th" scope="row"> {el.name} </TableCell>
                                 <TableCell style={cellStyle}>{el.description}</TableCell>
                                 <TableCell >{el.price}</TableCell>
-
+                                <TableCell >{el.time}</TableCell>
                                 <TableCell >
-                                    <FaEdit size={17} color="green" cursor={"pointer"} />
+                                    <FaEdit size={17} color="green" cursor={"pointer"} onClick={(e) => handleOpenUpdate(el)} />
                                     <span>.....</span>
                                     <FaTrashAlt size={17} color="red" cursor={"pointer"}
                                         onClick={(e) => handleOpenDelete(el._id)}
@@ -85,6 +96,7 @@ const Service = () => {
 
             </TableContainer>
             <ModalComponent open={open} closeModal={handleOpen} title={"Add New Service"} Component={AddService} />
+            <ModalComponent open={update} closeModal={handdleCloseUpdate} title={"update Service"} Component={UpdateService} defaultService={defaultService} />
             <DeleteModal open={deleteModal} closeModal={handleOpenDelete}
                 onClick={handleDeleteServices} />
         </>
