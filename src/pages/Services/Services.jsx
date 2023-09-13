@@ -95,6 +95,7 @@ const Service = () => {
                 </Table>
 
             </TableContainer>
+            
             <ModalComponent open={open} closeModal={handleOpen} title={"Add New Service"} Component={AddService} />
             <ModalComponent open={update} closeModal={handdleCloseUpdate} title={"update Service"} Component={UpdateService} defaultService={defaultService} />
             <DeleteModal open={deleteModal} closeModal={handleOpenDelete}
