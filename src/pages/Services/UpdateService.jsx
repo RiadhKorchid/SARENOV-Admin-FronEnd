@@ -15,7 +15,7 @@ const UpdateService = ({ closeModal, defaultService }) => {
     const [imagePublicId, setImage] = useState("")
 
     const newUpdateMutation = useMutation({
-        mutationFn: (payload) => axiosClient.put(`/service/update-service/${defaultService?._id}`, payload),
+        mutationFn: (payload) => axiosClient.put(`/services/update-service/${defaultService?._id}`, payload),
         onSuccess: () => {
             closeModal()
             queryClient.invalidateQueries(["services"])
@@ -52,11 +52,7 @@ const UpdateService = ({ closeModal, defaultService }) => {
                         onChange={(e) => setName(e.target.value)} value={name}
                         multiline
                         variant="outlined" />
-                    <TextField label="Image" type="text" fullWidth
-                        onChange={(e) => setImage(e.target.value)} value={imagePublicId}
-                        multiline
-                        variant="outlined"
-                    />
+              
                 </Stack>
                 <Stack spacing={2} direction="row">
                     <TextField label="Price" type="number" fullWidth

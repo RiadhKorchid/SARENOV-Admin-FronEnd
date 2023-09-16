@@ -3,18 +3,18 @@ import { useState } from "react"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axiosClient from "../../axios-client"
 
-
+import axios from "axios"
 const AddService = ({ closeModal }) => {
     const queryClient = useQueryClient()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('')
     const [time, setTime] = useState('')
-    const [imagePublicId, setImage] = useState("")
+    const [image, setImage] = useState("")
 
 
     const newPostMutation = useMutation({
-        mutationFn: (payload) => axiosClient.post('/service/addService', payload),
+        mutationFn: (payload) => axiosClient.post('/services/addService', payload),
         onSuccess: (data) => {
             closeModal()
             setName("")
@@ -29,23 +29,36 @@ const AddService = ({ closeModal }) => {
 
         }
     });
+    const handleFileChange = (event) => {
+        const image = event.target.files[0]
+        setImage(image)
+    }
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const payload = {
-            name, description, price, time, imagePublicId,
-        };
-        newPostMutation.mutate(payload);
-    };
+        // const payload = {
+        //     name, description, price, time, image
+        // };
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('time', time);
+
+
+        newPostMutation.mutate(formData)
+    }
     return (
         <>
             <form autoComplete="off" onSubmit={handleSubmit}>
                 <Stack spacing={2} direction="column">
+
+                    <TextField label="Name" type="text" fullWidth
+                        onChange={(e) => setName(e.target.value)} value={name} />
                     <Stack spacing={2} direction="row">
-                        <TextField label="Name" type="text" fullWidth
-                            onChange={(e) => setName(e.target.value)} value={name} />
-                        <TextField label="Image" type="text" fullWidth
-                            onChange={(e) => setImage(e.target.value)} value={imagePublicId} />
+                        <label htmlFor="">Image :</label>
+                        <input type="file" onChange={handleFileChange} />
                     </Stack>
 
                     <Stack spacing={2} direction="row">

@@ -19,7 +19,7 @@ const LoginPage = () => {
             password: password,
         }
 
-        axiosClient.post('/login', payload).then(({ data }) => {
+        axiosClient.post('/loginAdmin', payload).then(({ data }) => {
             setToken(data.token)
             setUser(data.user)
         })

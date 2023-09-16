@@ -9,7 +9,7 @@ import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axiosClient from "../../axios-client"
 import UpdateService from "./UpdateService";
 const Service = () => {
-    const { data, isLoading } = useFetch(["services"], '/service/getAllServices')
+    const { data, isLoading } = useFetch(["services"], '/services/getAllServices')
     const queryClient = useQueryClient()
     const [open, setOpen] = useState(false)
     const [update, setUpdate] = useState(false)
@@ -27,7 +27,7 @@ const Service = () => {
         setDefaultService(el)
         setUpdate(!update)
     }
-    const handdleCloseUpdate = () => {
+    const handleCloseUpdate = () => {
         setDefaultService({})
         setUpdate(!update)
     }
@@ -39,7 +39,7 @@ const Service = () => {
         whiteSpace: 'nowrap',
     };
     const newDeleteMutation = useMutation({
-        mutationFn: (selectService) => axiosClient.delete(`/service/delete-service/${selectService}`),
+        mutationFn: (selectService) => axiosClient.delete(`/services/delete-service/${selectService}`),
         onSuccess: () => {
             setDelete(!deleteModal)
             queryClient.invalidateQueries(["services"])
@@ -82,6 +82,7 @@ const Service = () => {
                                 <TableCell style={cellStyle}>{el.description}</TableCell>
                                 <TableCell >{el.price}</TableCell>
                                 <TableCell >{el.time}</TableCell>
+                                <img src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${el.image}`} style={{alignContent:"center",alignSelf:"center",padding:"10px",width : "120px" ,borderRadius:"5px", height :"80px"}}alt="" />
                                 <TableCell >
                                     <FaEdit size={17} color="green" cursor={"pointer"} onClick={(e) => handleOpenUpdate(el)} />
                                     <span>.....</span>
@@ -97,7 +98,7 @@ const Service = () => {
             </TableContainer>
             
             <ModalComponent open={open} closeModal={handleOpen} title={"Add New Service"} Component={AddService} />
-            <ModalComponent open={update} closeModal={handdleCloseUpdate} title={"update Service"} Component={UpdateService} defaultService={defaultService} />
+            <ModalComponent open={update} closeModal={handleCloseUpdate} title={"update Service"} Component={UpdateService} defaultService={defaultService} />
             <DeleteModal open={deleteModal} closeModal={handleOpenDelete}
                 onClick={handleDeleteServices} />
         </>

@@ -10,7 +10,10 @@ const UpdateRealisation = ({ closeModal, defaultService }) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [image, setImage] = useState('')
-
+    function handleChangeFile(e){
+        const image = event.target.files[0]
+        setImage(image)
+    }
     const newUpdateMutation = useMutation({
         mutationFn: (payload) => axiosClient.put(`/realisation/update-realisation/${defaultService?._id}`, payload),
         onSuccess: () => {
@@ -33,8 +36,11 @@ const UpdateRealisation = ({ closeModal, defaultService }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        const payload = { title, description, image }
-        newUpdateMutation.mutate(payload)
+        const formData = new FormData();
+        formData.append('title',title)
+        formData.append('description',description)
+        formData.append('image',image)
+        newUpdateMutation.mutate(formData)
 
     }
 
@@ -44,8 +50,6 @@ const UpdateRealisation = ({ closeModal, defaultService }) => {
                 <Stack spacing={2} direction="row">
                     <TextField label="Tilte" type="text" fullWidth
                         onChange={(e) => setTitle(e.target.value)} value={title} />
-                    <TextField label="Image" type="text" fullWidth
-                        onChange={(e) => setImage(e.target.value)} value={image} />
 
                 </Stack>
 

@@ -69,7 +69,7 @@ const Realisation = () => {
                         <TableRow>
                             <TableCell>Title</TableCell>
                             <TableCell >Description</TableCell>
-
+                            <TableCell>Image</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -80,8 +80,7 @@ const Realisation = () => {
                             >
                                 <TableCell component="th" scope="row"> {el.title} </TableCell>
                                 <TableCell style={cellStyle}>{el.description}</TableCell>
-
-
+                                <img src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${el.image}`} style={{alignContent:"center",alignSelf:"center",padding:"10px",width : "120px" ,borderRadius:"5px", height :"80px"}}alt="" />
                                 <TableCell >
                                     <FaEdit size={17} color="green" cursor="pointer" onClick={(e) => handleOpenUpdate(el)} />
                                     <span>.....</span>

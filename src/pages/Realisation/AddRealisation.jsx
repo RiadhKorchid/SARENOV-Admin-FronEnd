@@ -2,7 +2,7 @@ import { Box, TextField, FormControl, Stack, Button, TextareaAutosize } from "@m
 import { useState } from "react"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axiosClient from "../../axios-client"
-
+import axios from "axios"
 const AddRealisation = ({ closeModal }) => {
 
     const queryClient = useQueryClient()
@@ -24,26 +24,35 @@ const AddRealisation = ({ closeModal }) => {
 
         }
     })
-
+    const handleChangeFile=(event)=>{
+        const file = event.target.files[0]
+        setImage(file)
+    }
     const handleSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
-        const payload = { title, description, image }
-
-        newPostMutation.mutate(payload)
-
+        // const payload = {
+        //     name, description, price, time, image
+        // };
+        const formData = new FormData();
+        formData.append('image', image);
+        formData.append('title', title);
+        formData.append('description', description);
+      
+        
+    newPostMutation.mutate(formData)    
     }
 
     return (<>
         <form autoComplete="off" onSubmit={handleSubmit}>
             <Stack spacing={2} direction="column">
-                <Stack spacing={2} direction="row">
                     <TextField label="Tilte" type="text" fullWidth
                         onChange={(e) => setTitle(e.target.value)}  value={title}/>
-                    <TextField label="Image" type="text" fullWidth
-                        onChange={(e) => setImage(e.target.value)} value={image} />
 
-                </Stack>
+                <Stack spacing={2} direction="row">
+                   <label htmlFor="">Image :</label>
+                   <input type="file" onChange={handleChangeFile} />
+                        </Stack>
 
                 <Stack spacing={2} direction="row">
                     <TextField
